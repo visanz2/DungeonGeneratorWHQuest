@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Juego de Mazmorras</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <div class="tab">
+        <button class="tablinks active" onclick="openTab(event, 'mazmorra')">Mazmorra</button>
+        <button class="tablinks" onclick="openTab(event, 'tab2')">Pestaña 2</button>
+        <button class="tablinks" onclick="openTab(event, 'tab3')">Pestaña 3</button>
+        <button class="tablinks" onclick="openTab(event, 'tab4')">Pestaña 4</button>
+        <button class="tablinks" onclick="openTab(event, 'tab5')">Pestaña 5</button>
+    </div>
+
+    <div id="mazmorra" class="tabcontent" style="display: block;">
+        <div class="controls">
+            <select id="raceSelect">
+                <option value="elfo">Elfo</option>
+                <option value="enano">Enano</option>
+                <option value="humano">Humano</option>
+            </select>
+            <br>
+            <button onclick="generarMazmorra()">Generar Mazmorra</button>
+            <br>
+            <button onclick="sacarCarta()" id="sacarCartaBtn" disabled>Sacar Carta</button>
+        </div>
+        <div class="image-display" id="imageDisplay"></div>
+    </div>
+
+    <div id="tab2" class="tabcontent">
+        <h3>Pestaña 2</h3>
+    </div>
+
+    <div id="tab3" class="tabcontent">
+        <h3>Pestaña 3</h3>
+    </div>
+
+    <div id="tab4" class="tabcontent">
+        <h3>Pestaña 4</h3>
+    </div>
+
+    <div id="tab5" class="tabcontent">
+        <h3>Pestaña 5</h3>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="main.js"></script>
+</body>
+</html>
