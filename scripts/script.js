@@ -28,7 +28,7 @@ function inicializarSelects() {
     // Cargar las salas objetivo disponibles
     try {
         // Cargar el archivo JSON con la lista de salas
-        const response = await fetch('salas.json');
+        const response = await fetch('imagenes/mazmorra/Objetivo/salas.json');
         const data = await response.json();
         
         const selectSala = document.getElementById('salaObjetivo');
