@@ -2,51 +2,73 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Juego de Mazmorras</title>
-    <!-- CSS -->
-    <link rel="stylesheet" href="css/main.css">
+    <title>Dungeon Explorer</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div class="tab">
-        <button class="tablinks active" onclick="openTab(event, 'mazmorra')">Mazmorra</button>
-        <button class="tablinks" onclick="openTab(event, 'tab2')">Pestaña 2</button>
-        <button class="tablinks" onclick="openTab(event, 'tab3')">Pestaña 3</button>
-        <button class="tablinks" onclick="openTab(event, 'tab4')">Pestaña 4</button>
-        <button class="tablinks" onclick="openTab(event, 'tab5')">Pestaña 5</button>
-    </div>
-
-    <div id="mazmorra" class="tabcontent" style="display: block;">
-        <div class="controls">
-            <select id="raceSelect">
-                <option value="elfo">Elfo</option>
-                <option value="enano">Enano</option>
-                <option value="humano">Humano</option>
-            </select>
-            <br>
-            <button onclick="generarMazmorra()">Generar Mazmorra</button>
-            <br>
-            <button onclick="sacarCarta()" id="sacarCartaBtn" disabled>Sacar Carta</button>
+    <header>
+        <div class="user-info">
+            <span id="username">Usuario</span>
+            <i class="fas fa-user"></i>
         </div>
-        <div class="image-display" id="imageDisplay"></div>
+    </header>
+
+    <div class="tab-container">
+        <div class="tabs">
+            <button class="tab-button active" onclick="openTab(event, 'mazmorra')">Mazmorra</button>
+            <button class="tab-button" onclick="openTab(event, 'panoplia')">Panoplia</button>
+            <button class="tab-button" onclick="openTab(event, 'eventos')">Eventos</button>
+            <button class="tab-button" onclick="openTab(event, 'configuracion')">Configuración</button>
+            <button class="tab-button" onclick="openTab(event, 'otros')">Otros</button>
+        </div>
+
+        <!-- Pestaña Mazmorra -->
+        <div id="mazmorra" class="tab-content active">
+            <div class="control-panel">
+                <div class="select-container">
+                    <label for="salaObjetivo">Sala objetivo:</label>
+                    <select id="salaObjetivo" required>
+                        <option value="">Seleccione una sala</option>
+                    </select>
+                </div>
+
+                <div class="select-container">
+                    <label for="numCartas">Cuántas cartas:</label>
+                    <select id="numCartas" required>
+                        <option value="">Seleccione cantidad</option>
+                    </select>
+                </div>
+
+                <div class="button-container">
+                    <button id="btnGenerar" onclick="generarMazmorra()">Generar</button>
+                    <button id="btnSacarCarta" onclick="sacarCarta()" disabled>Sacar Carta</button>
+                </div>
+            </div>
+
+            <div id="cartaDisplay" class="carta-display">
+                <!-- Aquí se mostrarán las cartas -->
+            </div>
+        </div>
+
+        <!-- Otras pestañas -->
+        <div id="panoplia" class="tab-content">
+            <h2>Contenido de Panoplia</h2>
+        </div>
+
+        <div id="eventos" class="tab-content">
+            <h2>Contenido de Eventos</h2>
+        </div>
+
+        <div id="configuracion" class="tab-content">
+            <h2>Contenido de Configuración</h2>
+        </div>
+
+        <div id="otros" class="tab-content">
+            <h2>Contenido de Otros</h2>
+        </div>
     </div>
 
-    <div id="tab2" class="tabcontent">
-        <h3>Pestaña 2</h3>
-    </div>
-
-    <div id="tab3" class="tabcontent">
-        <h3>Pestaña 3</h3>
-    </div>
-
-    <div id="tab4" class="tabcontent">
-        <h3>Pestaña 4</h3>
-    </div>
-
-    <div id="tab5" class="tabcontent">
-        <h3>Pestaña 5</h3>
-    </div>
-
-    <!-- SCRIPTS -->
-    <script src="main.js"></script>
+    <script src="scripts/script.js"></script>
 </body>
 </html>
