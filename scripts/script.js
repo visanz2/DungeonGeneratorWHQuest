@@ -35,7 +35,7 @@ function inicializarSelects() {
         
         const selectSala = document.getElementById('salaObjetivo');
         // Limpiar opciones existentes
-        selectSala.innerHTML = '<option value="">Seleccione una sala</option>';
+        selectSala.innerHTML = '<option value="">Seleccione una sala2</option>';
         
         // Añadir cada sala del JSON
         data.salasObjetivo.forEach(salaArchivo => {
