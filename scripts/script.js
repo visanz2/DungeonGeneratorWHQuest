@@ -30,6 +30,8 @@ function inicializarSelects() {
         // Cargar el archivo JSON con la lista de salas
         const response = await fetch('imagenes/mazmorra/Objetivo/salas.json');
         const data = await response.json();
+
+        console.log("Hello World");
         
         const selectSala = document.getElementById('salaObjetivo');
         // Limpiar opciones existentes
