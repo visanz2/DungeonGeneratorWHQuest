@@ -153,6 +153,25 @@ button {
 }
 
 /* Pestaña mazmorras */
+.container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.selector-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.select-input {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    width: 100%;
+}
 .image-container {
     border-radius: 8px;
     overflow: hidden;
