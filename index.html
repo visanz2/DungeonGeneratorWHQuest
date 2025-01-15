@@ -26,6 +26,7 @@
         <!-- Pestaña Mazmorra -->
         <div id="mazmorra" class="tab-content active">
             <div class="control-panel">
+                <!-- Selector de sala -->
                 <div class="select-container">
                     <label for="salaObjetivo">Sala objetivo:</label>
                     <select id="salaObjetivo" required>
@@ -33,6 +34,12 @@
                     </select>
                 </div>
 
+                <!-- Contenedor de imagen -->
+                <div id="imageObjetivoContainer" class="image-container hidden">
+                    <img id="objetivoImage" src="" alt="Imagen de la sala objetivo" class="room-image">
+                </div>
+                
+                <!-- Selector de número de cartas -->
                 <div class="select-container">
                     <label for="numCartas">Cuántas cartas:</label>
                     <select id="numCartas" required>
