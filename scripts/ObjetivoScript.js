@@ -4,15 +4,35 @@ const imageObjetivoContainer = document.getElementById('imageObjetivoContainer')
 const objetivoImagePreview = document.getElementById('objetivoImagePreview');
 
 
-// Inicializar numCartas dropdown
+// Inicializar numCartas* dropdown
 function initializeNumCartasDropdown() {
     // Inicializar select de número de cartas
-    const selectNumCartas = document.getElementById('numCartas');
+    const selectNumCartasCorredor = document.getElementById('numCartasCorredor');
+    const selectNumCartasEspecial = document.getElementById('numCartasEspecial');
+    const selectNumCartasSubterraneo = document.getElementById('numCartasSubterraneo');
+
+    // Initialize corridor dropdown
     for (let i = 1; i <= 12; i++) {
-        const option = document.createElement('option');
+        option = document.createElement('option');
         option.value = i;
         option.textContent = i;
-        selectNumCartas.appendChild(option);
+        selectNumCartasCorredor.appendChild(option);
+    }
+
+    // Initialize Especial dropdown
+    for (let i = 1; i <= 12; i++) {
+        option = document.createElement('option');
+        option.value = i;
+        option.textContent = i;
+        selectNumCartasSubterraneo.appendChild(option);
+    }
+
+    // Initialize Subtterraneo dropdown
+    for (let i = 1; i <= 12; i++) {
+        option = document.createElement('option');
+        option.value = i;
+        option.textContent = i;
+        selectNumCartasEspecial.appendChild(option);
     }
 }
 
@@ -56,7 +76,7 @@ salaObjetivoDropdown.addEventListener('change', handleObjetivoSalasSelect);
 
 
 
-// DungeonBuilder
+// DungeonBuilder to show the dungeon
 class DungeonBuilder {
     // Contrusctor that will be remove or change to load the cards generated
     constructor() {
