@@ -2,11 +2,6 @@
 let listaCartas = [];
 let indiceActual = 0;
 
-// Elementos del DOM
-const roomSelect = document.getElementById('roomSelect');
-const imageContainer = document.getElementById('imageContainer');
-const roomImage = document.getElementById('roomImage');
-
 
 // Inicialización
 document.addEventListener('DOMContentLoaded', function() {
@@ -24,37 +19,8 @@ function inicializarSelects() {
         option.textContent = i;
         selectNumCartas.appendChild(option);
     }
-
-    // Cargar las salas objetivo disponibles
-    try {
-        // Cargar el archivo JSON con la lista de salas
-        const response = await fetch('imagenes/mazmorra/Objetivo/salas.json');
-        const data = await response.json();
-
-        console.log("Hello World");
-        
-        const selectSala = document.getElementById('salaObjetivo');
-        // Limpiar opciones existentes
-        selectSala.innerHTML = '<option value="">Seleccione una sala2</option>';
-        
-        // Añadir cada sala del JSON
-        data.salasObjetivo.forEach(salaArchivo => {
-            const option = document.createElement('option');
-            // Guardamos el nombre del archivo como valor
-            option.value = salaArchivo;
-            // Mostramos el nombre más amigable (quitamos extensión y reemplazamos guiones)
-            option.textContent = salaArchivo
-                .replace('.jpg', '')
-                .replace('.png', '')
-                .replace(/_/g, ' ')
-                .replace(/-/g, ' ');
-            selectSala.appendChild(option);
-        });
-    } catch (error) {
-        console.error('Error cargando las salas:', error);
-        alert('Error cargando las salas objetivo. Por favor, recarga la página.');
-    }
 }
+
 
 // Manejo de pestañas
 function openTab(evt, tabName) {
@@ -75,23 +41,11 @@ function openTab(evt, tabName) {
     localStorage.setItem('tabActiva', tabName);
 }
 
-// Manejador de cambio de sala objetivo
-roomSelect.addEventListener('change', function() {
-    const selectedRoom = this.value;
-    
-    if (selectedRoom && rooms[selectedRoom]) {
-        // Actualizar y mostrar la imagen
-        roomImage.src = rooms[selectedRoom].image;
-        roomImage.alt = `Imagen de ${rooms[selectedRoom].name}`;
-        imageContainer.classList.remove('hidden');
-    } else {
-        // Ocultar el contenedor de imagen si no hay sala seleccionada
-        imageContainer.classList.add('hidden');
-    }
-});
 
 // Generar mazmorra
 function generarMazmorra() {
+    console.log("Hello World");
+
     const numCartas = parseInt(document.getElementById('numCartas').value);
     const salaObjetivo = document.getElementById('salaObjetivo').value;
 
