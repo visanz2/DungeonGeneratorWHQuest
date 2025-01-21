@@ -2,18 +2,40 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Dungeon Explorer</title>
+    <title id="customizeTitle">Dungeon Explorer</title>
     <link rel="stylesheet" href="css\styles.css">
+    <link rel="stylesheet" href="css\general.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <header>
-        <div class="user-info">
-            <span id="username">Usuario2</span>
-            <i class="fas fa-user"></i>
-        </div>
-    </header>
+    <div class="language-selector">
+        <button class="language-button" onclick="generalClass.setLanguage('en')" id="enButton">
+            <svg class="flag-icon" viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg">
+                <clipPath id="s">
+                    <path d="M0,0 v30 h60 v-30 z"/>
+                </clipPath>
+                <path d="M0,0 v30 h60 v-30 z" fill="#012169"/>
+                <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/>
+                <path d="M0,0 L60,30 M60,0 L0,30" clip-path="url(#s)" stroke="#C8102E" stroke-width="4"/>
+                <path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/>
+                <path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6"/>
+            </svg>
+            English
+        </button>
+        <button class="language-button" onclick="generalClass.setLanguage('es')" id="esButton">
+            <svg class="flag-icon" viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg">
+                <rect width="60" height="30" fill="#c60b1e"/>
+                <rect width="60" height="15" fill="#ffc400" y="7.5"/>
+            </svg>
+            Español
+        </button>
+    </div>
 
+    <div class="controls">
+        <button class="control-button" onclick="generalClass.saveDungeon()" id="saveBtn">Save Dungeon</button>
+        <button class="control-button" onclick="generalClass.loadDungeon()" id="loadBtn">Load Dungeon</button>
+        <button class="control-button reset" onclick="generalClass.reset()" id="resetBtn">Reset</button>
+    </div>
     <div class="tab-container">
         <div class="tabs">
             <button class="tab-button active" onclick="openTab(event, 'mazmorra')">Mazmorra</button>
@@ -41,6 +63,16 @@
 
                 <!-- Selector de número de cartas -->
                 <div class="select-container">
+                    <div class="deck-input">
+                        <label for="roomCount">Number of Rooms:</label>
+                        <input type="number" id="roomCount" min="1" max="15" value="12">
+                    </div>
+                    <div class="deck-input">
+                        <label for="corridorCount">Number of Corridors:</label>
+                        <input type="number" id="corridorCount" min="1" max="10" value="6">
+                    </div>
+
+
                     <label for="numCartasCorredor">Cuántas corredores quieres:</label>
                     <select id="numCartasCorredor" required>
                         <option value="">Seleccione cantidad</option>
@@ -56,6 +88,7 @@
                     
                 </div>
 
+    
                 <div class="button-container">
                     <button id="btnGenerar" onclick="generarMazmorra()">Generar</button>
                 </div>
@@ -82,8 +115,23 @@
             <h2>Contenido de Otros</h2>
         </div>
     </div>
+
+    
+    <!-- Loading data scripts -->
+    <script src="scripts/translations.js"></script>
     <script src="scripts/salas.js"></script>
-    <script src="scripts/ObjetivoScript.js"></script>
+
+    <!-- Loading logical scripts -->
+    <script src="scripts/general.js"></script>
+    <script src="scripts/objetivoScript.js"></script>
     <!--<script src="scripts/script.js"></script>-->
+
+    <script>
+    // Initialize the game when the page loads
+        let generalClass;
+        window.onload = () => {
+            generalClass = new GeneralClass();
+        };
+    </script>
 </body>
 </html>
