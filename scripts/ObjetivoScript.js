@@ -1,52 +1,65 @@
 ﻿// Get the objetivoSala dropdown element and preview div
-const salaObjetivoDropdown = document.getElementById('salaObjetivoDropdown');
+const dropdownObjetiveRoom = document.getElementById('salaObjetivoDropdown');
 const imageObjetivoContainer = document.getElementById('imageObjetivoContainer');
 const objetivoImagePreview = document.getElementById('objetivoImagePreview');
-
+const dropdownNumCorredor = document.getElementById('numCartasCorredor');
+const dropdownSpecialRoom = document.getElementById('numCartasEspecial');
+const dropdownNumUnderground= document.getElementById('numCartasSubterraneo');
 
 // Inicializar numCartas* dropdown
 function initializeNumCartasDropdown() {
     // Inicializar select de número de cartas
-    const selectNumCartasCorredor = document.getElementById('numCartasCorredor');
-    const selectNumCartasEspecial = document.getElementById('numCartasEspecial');
-    const selectNumCartasSubterraneo = document.getElementById('numCartasSubterraneo');
+    
 
     // Initialize corridor dropdown
     for (let i = 1; i <= 12; i++) {
         option = document.createElement('option');
         option.value = i;
         option.textContent = i;
-        selectNumCartasCorredor.appendChild(option);
+        dropdownNumCorredor.appendChild(option);
     }
 
     // Initialize Especial dropdown
-    for (let i = 1; i <= 12; i++) {
+    /*for (let i = 1; i <= 12; i++) {
         option = document.createElement('option');
         option.value = i;
         option.textContent = i;
-        selectNumCartasSubterraneo.appendChild(option);
-    }
+        dropdownSpecialRoom.appendChild(option);
+    }*/
 
-    // Initialize Subtterraneo dropdown
+    // Initialize Underground dropdown
     for (let i = 1; i <= 12; i++) {
         option = document.createElement('option');
         option.value = i;
         option.textContent = i;
-        selectNumCartasEspecial.appendChild(option);
+        dropdownNumUnderground.appendChild(option);
     }
 }
 
 // Function to populate the dropdown
-function populateObjetivoSalaDropdown() {
+function populateObjetiveSalaDropdown() {
     // Add each image from the imageData to the dropdown
-    imageData.images.forEach(image => {
+    objetiveRoomData.room.forEach(room => {
         const option = document.createElement('option');
-        option.value = image.path;
-        option.textContent = image.name;
-        salaObjetivoDropdown.appendChild(option);
+        option.value = room.path;
+        option.textContent = room.name;
+        dropdownObjetiveRoom.appendChild(option);
     });
 
-    console.log('Loaded images:', imageData.images.map(img => img.name));
+    console.log('Loaded images:', objetiveRoomData.room.map(room => room.name));
+}
+
+// Function to populate the dropdown
+function populateSpecialSalaDropdown() {
+    // Add each image from the imageData to the dropdown
+    specialRoomData.room.forEach(room => {
+        const option = document.createElement('option');
+        option.value = room.path;
+        option.textContent = room.name;
+        dropdownSpecialRoom.appendChild(option);
+    });
+
+    console.log('Loaded images:', specialRoomData.room.map(room => room.name));
 }
 
 // Function to handle selection change
@@ -72,7 +85,7 @@ function handleObjetivoSalasSelect(event) {
 }
 
 // Add event listener for selection change
-salaObjetivoDropdown.addEventListener('change', handleObjetivoSalasSelect);
+dropdownObjetiveRoom.addEventListener('change', handleObjetivoSalasSelect);
 
 
 
@@ -94,7 +107,7 @@ class DungeonBuilder {
 
         this.placedCards = [];
         this.availableSpots = [{x: 0, y: 2, pathId: 'main' }];
-        this.gridSize = {width: 6, height: 5 };
+        this.gridSize = {width: 8, height: 12 };
 
         this.initializeUI();
         this.render();
@@ -110,6 +123,8 @@ class DungeonBuilder {
 
     // Function to draw a card in specific position
     drawCard(pathId, position) {
+
+        // Drawing a random card
         const deckIndex = this.decks.findIndex(d => d.pathId === pathId);
 
         if (deckIndex === -1 || this.decks[deckIndex].cards.length === 0) return;
@@ -179,7 +194,7 @@ class DungeonBuilder {
 
         const content = document.createElement('div');
         content.className = 'card-content';
-        content.textContent = card.type === 'room' ? 'Room' : 'Hall';
+        content.textContent = card.type === 'room' ? 'Room' : 'Hall2';
 
         const arrowsContainer = document.createElement('div');
         arrowsContainer.className = 'arrows';
@@ -203,13 +218,38 @@ class DungeonBuilder {
         return cardDiv;
     }
 
-    // Function to create the draw button in the room
-    createDrawButton(spot) {
-        const button = document.createElement('button');
-        button.className = 'draw-button';
-        button.textContent = 'Draw Card';
-        button.onclick = () => this.drawCard(spot.pathId, {x: spot.x, y: spot.y });
-        return button;
+    // Function to create the buttons to add room in the grid
+    createAddButtons(spot) {
+        const container = document.createElement('div');
+        container.className = 'add-buttons-container';
+
+        const normalRoomButton = document.createElement('button');
+        normalRoomButton.className = 'add-room-button normal';
+        normalRoomButton.textContent = 'Normal Room';
+        normalRoomButton.addEventListener('click', () => this.drawCard(spot.pathId, { x: spot.x, y: spot.y }));
+
+        const specialRoomButton = document.createElement('button');
+        specialRoomButton.className = 'add-room-button special';
+        specialRoomButton.textContent = 'Special Room';
+        specialRoomButton.addEventListener('click', () => {
+
+            const specialRoom = dropdownSpecialRoom.value;
+
+            if (!specialRoom) {
+                alert('NO SPECIAL ROOM SELECTED');
+                return;
+            }
+
+            this.drawCard(spot.pathId,
+                { x: spot.x, y: spot.y },
+                { type: 'special', subtype: specialRoom }
+            );
+        });
+
+        container.appendChild(normalRoomButton);
+        container.appendChild(specialRoomButton);
+
+        return container;
     }
 
     // Rendering deck
@@ -232,7 +272,7 @@ class DungeonBuilder {
                 if (card) {
                     cell.appendChild(this.createCardElement(card));
                 } else if (spot) {
-                    cell.appendChild(this.createDrawButton(spot));
+                    cell.appendChild(this.createAddButtons(spot));
                 }
 
                 this.gridElement.appendChild(cell);
@@ -246,7 +286,8 @@ class DungeonBuilder {
 // Inicialización, populating dropdown when page loads
 document.addEventListener('DOMContentLoaded', function () {
     initializeNumCartasDropdown();
-    populateObjetivoSalaDropdown();
+    populateObjetiveSalaDropdown();
+    populateSpecialSalaDropdown();
     new DungeonBuilder();
 });
     // Initialize the game when the page loads
