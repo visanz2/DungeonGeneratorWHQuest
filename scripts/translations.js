@@ -1,0 +1,42 @@
+const translations = {
+    en: {
+        customizeTitle: 'Dungeon Generator Warhammer Quest',
+        roomLabel: 'Number of Rooms:',
+        corridorLabel: 'Number of Corridors:',
+        updateDeck: 'Update Deck',
+        save: 'Save Dungeon',
+        load: 'Load Dungeon',
+        reset: 'Reset',
+        drawCard: 'Draw Card',
+        room: 'Room',
+        hall: 'Hall',
+        path: 'Path',
+        cardsRemaining: 'cards remaining',
+        confirmReset: 'Are you sure you want to reset the dungeon?',
+        confirmUpdate: 'Updating the deck will reset the current dungeon. Continue?',
+        dungeonSaved: 'Dungeon saved!',
+        dungeonLoaded: 'Dungeon loaded!',
+        noSavedDungeon: 'No saved dungeon found!',
+        toggleLanguage: 'Español'
+    },
+    es: {
+        customizeTitle: 'Generador dungeon Warhammer Quest',
+        roomLabel: 'Número de Salas:',
+        corridorLabel: 'Número de Pasillos:',
+        updateDeck: 'Actualizar Mazo',
+        save: 'Guardar Mazmorra',
+        load: 'Cargar Mazmorra',
+        reset: 'Reiniciar',
+        drawCard: 'Robar Carta',
+        room: 'Sala',
+        hall: 'Pasillo',
+        path: 'Camino',
+        cardsRemaining: 'cartas restantes',
+        confirmReset: '¿Estás seguro de que quieres reiniciar la mazmorra?',
+        confirmUpdate: 'Actualizar el mazo reiniciará la mazmorra actual. ¿Continuar?',
+        dungeonSaved: '¡Mazmorra guardada!',
+        dungeonLoaded: '¡Mazmorra cargada!',
+        noSavedDungeon: '¡No se encontró ninguna mazmorra guardada!',
+        toggleLanguage: 'English'
+    }
+};

@@ -211,6 +211,7 @@ button {
 }
 
 .cell {
+<<<<<<< HEAD
     width: 120px;
     height: 120px;
     background: white;
@@ -261,3 +262,16 @@ button {
     .add-room-button.special:hover {
         background-color: #7c3aed;
     }
+=======
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+>>>>>>> 774f76f76e97dee4600779fe1d199035c5188a81

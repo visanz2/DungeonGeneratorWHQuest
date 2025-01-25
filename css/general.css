@@ -1,0 +1,22 @@
+/* Style for language button */
+.language-selector {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.language-button {
+    padding: 8px 16px;
+    background-color: #6366f1;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.language-button:hover {
+    background-color: #4f46e5;
+    transform: translateY(-2px);
+}
