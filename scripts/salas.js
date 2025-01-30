@@ -23,15 +23,15 @@ const corridorData = {
     room: [
         {
             name: "Pasillo(1)",
-            path: "0D.jpg"
+            path: "0A.jpg"
         },
         {
             name: "Pasillo(2)",
-            path: "0D.jpg"
+            path: "0B.jpg"
         },
         {
             name: "Pasillo(3)",
-            path: "0D.jpg"
+            path: "0C.jpg"
         },
         {
             name: "Pasillo(4)",

@@ -154,7 +154,7 @@
   <script>
     // Add these at the top of your script
     const IMAGE_BASE_PATH = 'imagenes/Mazmorra/';
-    
+
     const LANGUAGES = {
       en: {
         title: "Tree-Style Dungeon",
@@ -272,7 +272,7 @@
       imageButton.className = 'next-button';
       imageButton.textContent = currentLang.viewImage;
       imageButton.onclick = () => {
-        const subfolder = elementType === 'room' ? 'Objetivo/' : 'Corredor/';
+        const subfolder = elementType === 'room' ? 'OBJETIVO/' : 'CORREDOR/';
         const imageUrl = `${IMAGE_BASE_PATH}${subfolder}${randomEntry.path}`;
         const imageWindow = window.open(imageUrl, '_blank', 'width=600,height=400');
       };
