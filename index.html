@@ -127,6 +127,28 @@
       max-width: 100%;
       max-height: 80vh;
     }
+
+    /* Objective selection */
+    .special-room-selector {
+    margin-bottom: 20px;
+    background: #444;
+    padding: 15px;
+    border-radius: 5px;
+    width: 300px;
+    text-align: center;
+  }
+  
+  .objective-preview {
+    margin-top: 10px;
+    max-width: 200px;
+    border: 2px solid #666;
+    border-radius: 5px;
+  }
+
+  /* Add this to keep button styling consistent */
+  #selectedObjectivePreview button {
+    margin-top: 10px;
+  }
   </style>
 </head>
 <body>
@@ -136,6 +158,12 @@
   </select>
 
   <h1 id="title">Tree-Style Dungeon</h1>
+  <div class="special-room-selector">
+    <label id="specialRoomLabel">Special Objective Room:</label>
+    <select id="objectiveRoomSelect" ></select>
+    <div id="selectedObjectivePreview" style="margin-top: 10px;"></div>
+  </div>
+
   <label for="rooms" id="roomsLabel">Rooms:</label>
   <input type="number" id="rooms" min="1" value="5">
   <label for="corridors" id="corridorsLabel">Corridors:</label>
@@ -166,6 +194,8 @@
         left: "Left",
         right: "Right",
         next: "Next",
+        specialRoom: "Objective Room:",
+        selectRoom: "-- Select Room --",        
         viewImage: "View Image"
       },
       es: {
@@ -178,6 +208,8 @@
         left: "Izquierda",
         right: "Derecha",
         next: "Siguiente",
+        specialRoom: "Sala Objetivo:",
+        selectRoom: "-- Seleccionar Sala --",
         viewImage: "Ver Imagen"
       }
     };
@@ -194,8 +226,53 @@
       updateUI();
     });
 
+    // Initialize objective room selector
+    function initObjectiveRoomSelector() {
+      const select = document.getElementById('objectiveRoomSelect');
+      const preview = document.getElementById('selectedObjectivePreview');
+      
+      // Clear existing options
+      select.innerHTML = '';
+      
+      // Create default option
+      const defaultOption = document.createElement('option');
+      defaultOption.value = '';
+      defaultOption.textContent = currentLang.selectRoom;
+      select.appendChild(defaultOption);
+      
+      // Populate options
+      ObjectiveRoomData.room.forEach(room => {
+        const option = document.createElement('option');
+        option.value = room.path;
+        option.textContent = room.name;
+        select.appendChild(option);
+      });
+      
+      // Handle selection changes
+      select.addEventListener('change', () => {
+        preview.innerHTML = '';
+        if (select.value) {
+          const viewButton = document.createElement('button');
+          viewButton.className = 'next-button';
+          viewButton.textContent = currentLang.viewImage;
+          viewButton.onclick = () => {
+            const imageUrl = `imagenes/Mazmorra/OBJETIVO/${select.value}`;
+            window.open(imageUrl, '_blank', 'width=600,height=400');
+          };
+          preview.appendChild(viewButton);
+        }
+      });
+    }
+
+    // Add this to your initialization code
+    document.addEventListener('DOMContentLoaded', () => {
+      initObjectiveRoomSelector();
+      updateUI(); // Make sure translations are applied
+    });
+
     function updateUI() {
       // Update static elements
+      document.getElementById('specialRoomLabel').textContent = currentLang.specialRoom;
       document.getElementById('title').textContent = currentLang.title;
       document.getElementById('roomsLabel').textContent = currentLang.rooms;
       document.getElementById('corridorsLabel').textContent = currentLang.corridors;
@@ -217,6 +294,12 @@
           buttonData.element.style.display = originalDisplay;
         }
       });
+
+      document.getElementById('specialRoomLabel').textContent = currentLang.specialRoom;
+      const previewButton = document.querySelector('#selectedObjectivePreview button');
+      if (previewButton) {
+        previewButton.textContent = currentLang.viewImage;
+      }
     }
 
     function initializeDungeon() {
@@ -272,7 +355,7 @@
       imageButton.className = 'next-button';
       imageButton.textContent = currentLang.viewImage;
       imageButton.onclick = () => {
-        const subfolder = elementType === 'room' ? 'OBJETIVO/' : 'CORREDOR/';
+        const subfolder = elementType === 'room' ? 'SUBTERRANEO/' : 'CORREDOR/';
         const imageUrl = `${IMAGE_BASE_PATH}${subfolder}${randomEntry.path}`;
         const imageWindow = window.open(imageUrl, '_blank', 'width=600,height=400');
       };

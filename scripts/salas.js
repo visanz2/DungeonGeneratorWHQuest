@@ -40,7 +40,26 @@ const corridorData = {
     ]
 };
 
-
+const ObjectiveRoomData = {
+    room: [
+        {
+            name: "Pozo de Lucha",
+            path: "01.jpg"
+        },
+        {
+            name: "Cámara Funeraria",
+            path: "02.jpg"
+        },
+        {
+            name: "Abismo de Fuego",
+            path: "03.jpg"
+        },
+        {
+            name: "Cámara del Ídolo",
+            path: "04.jpg"
+        }
+    ]
+};
 
 const specialRoomData = {
     room: [
