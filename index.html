@@ -1,137 +1,389 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title id="customizeTitle">Dungeon Explorer</title>
-    <link rel="stylesheet" href="css\styles.css">
-    <link rel="stylesheet" href="css\general.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multi-language Dungeon Crawler</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #333;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    .dungeon {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .node-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+    .room, .corridor {
+      padding: 10px 20px;
+      margin: 10px;
+      border: 2px solid #666;
+      border-radius: 5px;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      background-color: #444;
+    }
+    .corridor {
+      background-color: #555;
+    }
+    .branch-container {
+      display: flex;
+      position: relative;
+      gap: 100px;
+      margin-top: 40px;
+    }
+    .vertical-connector {
+      position: absolute;
+      width: 2px;
+      background-color: #666;
+      z-index: 1;
+    }
+    .horizontal-connector {
+      position: absolute;
+      height: 2px;
+      background-color: #666;
+      z-index: 1;
+    }
+    .next-button {
+      margin: 5px;
+      padding: 5px 10px;
+      background-color: #666;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .next-button:hover {
+      background-color: #777;
+    }
+    .button-container {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .language-selector {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 5px;
+      background-color: #666;
+      color: white;
+      border-radius: 4px;
+    }
+    .node-text {
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+    input, button {
+      margin: 5px;
+      padding: 5px;
+    }
+    /* pop-up */
+    modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.8);
+    }
+    .modal-content {
+      background-color: #333;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #666;
+      width: 80%;
+      max-width: 700px;
+      position: relative;
+      text-align: center;
+    }
+    .close {
+      color: #fff;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .close:hover {
+      color: #ccc;
+    }
+    #modalImage {
+      max-width: 100%;
+      max-height: 80vh;
+    }
+  </style>
 </head>
 <body>
-    <div class="language-selector">
-        <button class="language-button" onclick="generalClass.setLanguage('en')" id="enButton">
-            <svg class="flag-icon" viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg">
-                <clipPath id="s">
-                    <path d="M0,0 v30 h60 v-30 z"/>
-                </clipPath>
-                <path d="M0,0 v30 h60 v-30 z" fill="#012169"/>
-                <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6"/>
-                <path d="M0,0 L60,30 M60,0 L0,30" clip-path="url(#s)" stroke="#C8102E" stroke-width="4"/>
-                <path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10"/>
-                <path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6"/>
-            </svg>
-            English
-        </button>
-        <button class="language-button" onclick="generalClass.setLanguage('es')" id="esButton">
-            <svg class="flag-icon" viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg">
-                <rect width="60" height="30" fill="#c60b1e"/>
-                <rect width="60" height="15" fill="#ffc400" y="7.5"/>
-            </svg>
-            Español
-        </button>
+  <select class="language-selector" id="languageSelect">
+    <option value="en">English</option>
+    <option value="es">Español</option>
+  </select>
+
+  <h1 id="title">Tree-Style Dungeon</h1>
+  <label for="rooms" id="roomsLabel">Rooms:</label>
+  <input type="number" id="rooms" min="1" value="5">
+  <label for="corridors" id="corridorsLabel">Corridors:</label>
+  <input type="number" id="corridors" min="0" value="3">
+  <button onclick="initializeDungeon()" id="startButton">Start New Dungeon</button>
+
+  <div class="dungeon" id="dungeon"></div>
+
+  <div id="imageModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <img id="modalImage" src="dwarf.png">
     </div>
-
-    <div class="controls">
-        <button class="control-button" onclick="generalClass.saveDungeon()" id="saveBtn">Save Dungeon</button>
-        <button class="control-button" onclick="generalClass.loadDungeon()" id="loadBtn">Load Dungeon</button>
-        <button class="control-button reset" onclick="generalClass.reset()" id="resetBtn">Reset</button>
-    </div>
-    <div class="tab-container">
-        <div class="tabs">
-            <button class="tab-button active" onclick="openTab(event, 'mazmorra')">Mazmorra</button>
-            <button class="tab-button" onclick="openTab(event, 'panoplia')">Panoplia</button>
-            <button class="tab-button" onclick="openTab(event, 'eventos')">Eventos</button>
-            <button class="tab-button" onclick="openTab(event, 'configuracion')">Configuración</button>
-            <button class="tab-button" onclick="openTab(event, 'otros')">Otros</button>
-        </div>
-
-        <!-- Pestaña Mazmorra -->
-        <div id="mazmorra" class="tab-content active">
-            <div class="control-panel">
-                <!-- Selector de sala -->
-                <div class="select-container">
-                    <label for="salaObjetivo">Sala objetivo:</label>
-                    <select id="salaObjetivoDropdown" required>
-                        <option value="">Seleccione una sala</option>
-                    </select>
-                </div>
-
-                <!-- Contenedor de imagen -->
-                <div id="imageObjetivoContainer" class="image-container">
-                    <img id="objetivoImagePreview" src="" alt="Imagen de la sala objetivo" class="room-image">
-                </div>
-
-                <!-- Selector de número de cartas -->
-                <div class="select-container">
-                    <div class="deck-input">
-                        <label for="roomCount">Number of Rooms:</label>
-                        <input type="number" id="roomCount" min="1" max="15" value="12">
-                    </div>
-                    <div class="deck-input">
-                        <label for="corridorCount">Number of Corridors:</label>
-                        <input type="number" id="corridorCount" min="1" max="10" value="6">
-                    </div>
-
-
-                    <label for="numCartasCorredor">Cuántas corredores quieres:</label>
-                    <select id="numCartasCorredor" required>
-                        <option value="">Seleccione cantidad</option>
-                    </select>
-                    <label for="numCartasEspecial">Cuántas salas especiales quieres:</label>
-                    <select id="numCartasEspecial" required>
-                        <option value="">Seleccione cantidad</option>
-                    </select>
-                    <label for="numCartasSubterraneo">Cuántas salas de subterraneo quieres:</label>
-                    <select id="numCartasSubterraneo" required>
-                        <option value="">Seleccione cantidad</option>
-                    </select>
-                    
-                </div>
-
+  </div>
+  <script src="scripts/salas.js"></script>
+  <script>
+    // Add these at the top of your script
+    const IMAGE_BASE_PATH = 'imagenes/Mazmorra/';
     
-                <div class="button-container">
-                    <button id="btnGenerar" onclick="generarMazmorra()">Generar</button>
-                </div>
-            </div>
+    const LANGUAGES = {
+      en: {
+        title: "Tree-Style Dungeon",
+        rooms: "Rooms:",
+        corridors: "Corridors:",
+        start: "Start New Dungeon",
+        room: "Room",
+        corridor: "Corridor",
+        left: "Left",
+        right: "Right",
+        next: "Next",
+        viewImage: "View Image"
+      },
+      es: {
+        title: "Mazmorra Estilo Árbol",
+        rooms: "Habitaciones:",
+        corridors: "Pasillos:",
+        start: "Comenzar Mazmorra",
+        room: "Habitación",
+        corridor: "Pasillo",
+        left: "Izquierda",
+        right: "Derecha",
+        next: "Siguiente",
+        viewImage: "Ver Imagen"
+      }
+    };
 
-            <div class="deck-info" id="deckInfo"></div>
-            <div class="grid" id="grid"></div>
-        </div>
+    let currentLang = LANGUAGES.en;
+    let elements = [];
+    let currentDepth = 0;
+    let allNodes = [];
+    let allButtons = [];
+    let allTexts = [];
 
-        <!-- Otras pestañas -->
-        <div id="panoplia" class="tab-content">
-            <h2>Contenido de Panoplia</h2>
-        </div>
+    document.getElementById('languageSelect').addEventListener('change', (e) => {
+      currentLang = LANGUAGES[e.target.value];
+      updateUI();
+    });
 
-        <div id="eventos" class="tab-content">
-            <h2>Contenido de Eventos</h2>
-        </div>
+    function updateUI() {
+      // Update static elements
+      document.getElementById('title').textContent = currentLang.title;
+      document.getElementById('roomsLabel').textContent = currentLang.rooms;
+      document.getElementById('corridorsLabel').textContent = currentLang.corridors;
+      document.getElementById('startButton').textContent = currentLang.start;
 
-        <div id="configuracion" class="tab-content">
-            <h2>Contenido de Configuración</h2>
-        </div>
+      // Update existing text containers
+      allTexts.forEach(text => {
+        text.element.textContent = text.type === 'room' 
+          ? currentLang.room 
+          : currentLang.corridor;
+      });
 
-        <div id="otros" class="tab-content">
-            <h2>Contenido de Otros</h2>
-        </div>
-    </div>
+      // Update existing buttons with preserved state
+      allButtons.forEach(buttonData => {
+        const translation = currentLang[buttonData.key];
+        if (translation) {
+          const originalDisplay = buttonData.element.style.display;
+          buttonData.element.textContent = translation;
+          buttonData.element.style.display = originalDisplay;
+        }
+      });
+    }
 
-    
-    <!-- Loading data scripts -->
-    <script src="scripts/translations.js"></script>
-    <script src="scripts/salas.js"></script>
+    function initializeDungeon() {
+      allNodes = [];
+      allButtons = [];
+      allTexts = [];
+      const rooms = parseInt(document.getElementById('rooms').value);
+      const corridors = parseInt(document.getElementById('corridors').value);
+      elements = [];
+      currentDepth = 0;
+      
+      for (let i = 0; i < rooms; i++) elements.push('room');
+      for (let i = 0; i < corridors; i++) elements.push('corridor');
+      shuffleArray(elements);
 
-    <!-- Loading logical scripts -->
-    <script src="scripts/general.js"></script>
-    <script src="scripts/objetivoScript.js"></script>
-    <!--<script src="scripts/script.js"></script>-->
+      const dungeon = document.getElementById('dungeon');
+      dungeon.innerHTML = '';
 
-    <script>
-    // Initialize the game when the page loads
-        let generalClass;
-        window.onload = () => {
-            generalClass = new GeneralClass();
-        };
-    </script>
+      const rootContainer = document.createElement('div');
+      rootContainer.className = 'node-container';
+      dungeon.appendChild(rootContainer);
+      
+      createNextNode(rootContainer);
+    }
+
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    function createNextNode(container) {
+      if (elements.length === 0) return;
+
+      const elementType = elements.shift();
+      const node = document.createElement('div');
+      node.className = elementType;
+      
+      // Get random data entry
+      const data = elementType === 'room' ? roomData : corridorData;
+      const randomEntry = data.room[Math.floor(Math.random() * data.room.length)];
+      
+      // Text container
+      const textContainer = document.createElement('div');
+      textContainer.className = 'node-text';
+      textContainer.textContent = elementType === 'room' 
+        ? `${currentLang.room} ${randomEntry.name}` 
+        : `${currentLang.corridor} ${randomEntry.name}`;
+      
+      // Image button
+      const imageButton = document.createElement('button');
+      imageButton.className = 'next-button';
+      imageButton.textContent = currentLang.viewImage;
+      imageButton.onclick = () => {
+        const subfolder = elementType === 'room' ? 'Objetivo/' : 'Corredor/';
+        const imageUrl = `${IMAGE_BASE_PATH}${subfolder}${randomEntry.path}`;
+        const imageWindow = window.open(imageUrl, '_blank', 'width=600,height=400');
+      };
+
+      // Button container
+      const buttonContainer = document.createElement('div');
+      buttonContainer.className = 'button-container';
+
+      // Assemble node
+      node.appendChild(textContainer);
+      node.appendChild(imageButton);
+      node.appendChild(buttonContainer);
+      container.appendChild(node);
+
+      // Track elements
+      allTexts.push({ element: textContainer, type: elementType });
+      allButtons.push({ element: imageButton, key: 'viewImage' });
+      allNodes.push(node);
+
+      if (currentDepth > 0) {
+        const verticalConnector = document.createElement('div');
+        verticalConnector.className = 'vertical-connector';
+        verticalConnector.style.height = '20px';
+        verticalConnector.style.bottom = '100%';
+        container.prepend(verticalConnector);
+      }
+
+      if (elementType === 'corridor') {
+        const leftButton = createButton('left', () => createBranch(container, 'left'));
+        const rightButton = createButton('right', () => createBranch(container, 'right'));
+        buttonContainer.appendChild(leftButton);
+        buttonContainer.appendChild(rightButton);
+      } else if (elements.length > 0) {
+        const nextButton = createButton('next', () => {
+          const childContainer = document.createElement('div');
+          childContainer.className = 'node-container';
+          container.appendChild(childContainer);
+          createNextNode(childContainer);
+        });
+        buttonContainer.appendChild(nextButton);
+      }
+
+      currentDepth++;
+    }
+
+    function createBranch(container, side) {
+      let branchContainer = container.querySelector('.branch-container');
+      
+      if (!branchContainer) {
+        branchContainer = document.createElement('div');
+        branchContainer.className = 'branch-container';
+        
+        const horizontalConnector = document.createElement('div');
+        horizontalConnector.className = 'horizontal-connector';
+        horizontalConnector.style.width = '100%';
+        horizontalConnector.style.top = '-20px';
+        branchContainer.appendChild(horizontalConnector);
+        
+        container.appendChild(branchContainer);
+      }
+
+      const branch = document.createElement('div');
+      branch.className = `node-container ${side}-branch`;
+      
+      const connector = document.createElement('div');
+      connector.className = 'vertical-connector';
+      connector.style.height = '20px';
+      connector.style.left = side === 'left' ? 'calc(100% - 1px)' : '0%';
+      branch.appendChild(connector);
+      
+      if (side === 'left') {
+        branchContainer.insertBefore(branch, branchContainer.firstChild);
+      } else {
+        branchContainer.appendChild(branch);
+      }
+
+      createNextNode(branch);
+    }
+
+    function createButton(key, onClick) {
+      const button = document.createElement('button');
+      button.className = 'next-button';
+      button.textContent = currentLang[key];
+      button.onclick = () => {
+        onClick();
+        button.style.display = 'none';
+      };
+
+      allButtons.push({
+        element: button,
+        key: key
+      });
+
+      return button;
+    }
+
+    function showImageModal() {
+      document.getElementById('imageModal').style.display = 'block';
+    }
+
+    // Close modal functionality
+    document.querySelector('.close').addEventListener('click', () => {
+      document.getElementById('imageModal').style.display = 'none';
+    });
+
+    window.onclick = function(event) {
+      const modal = document.getElementById('imageModal');
+      if (event.target === modal) {
+        modal.style.display = 'none';
+      }
+    };
+  </script>
 </body>
 </html>

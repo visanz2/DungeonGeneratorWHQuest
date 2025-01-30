@@ -1,23 +1,45 @@
-const objetiveRoomData = {
+const roomData = {
     room: [
         {
-            name: "01",
+            name: "Pozo de Lucha",
             path: "01.jpg"
         },
         {
-            name: "02",
+            name: "Cámara Funeraria",
             path: "02.jpg"
         },
         {
-            name: "03",
+            name: "Abismo de Fuego",
             path: "03.jpg"
         },
         {
-            name: "04",
+            name: "Cámara del Ídolo",
             path: "04.jpg"
         }
     ]
 };
+
+const corridorData = {
+    room: [
+        {
+            name: "Pasillo(1)",
+            path: "0D.jpg"
+        },
+        {
+            name: "Pasillo(2)",
+            path: "0D.jpg"
+        },
+        {
+            name: "Pasillo(3)",
+            path: "0D.jpg"
+        },
+        {
+            name: "Pasillo(4)",
+            path: "0D.jpg"
+        }
+    ]
+};
+
 
 
 const specialRoomData = {
